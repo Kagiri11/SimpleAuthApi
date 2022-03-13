@@ -1,7 +1,19 @@
-fun main(args: Array<String>) {
-    println("Hello World!")
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.gson.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
+import routes.auth.authRouting
 
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+fun main() {
+   embeddedServer(Netty, port = 8080){
+        module()
+   }.start(wait = true)
+}
+
+fun Application.module(){
+    install(ContentNegotiation){
+        gson()
+    }
+    authRouting()
 }
