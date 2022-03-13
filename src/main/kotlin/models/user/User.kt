@@ -1,4 +1,4 @@
-package models.auth
+package models.user
 
 import org.bson.codecs.pojo.annotations.BsonId
 import org.litote.kmongo.Id
