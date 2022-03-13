@@ -6,7 +6,8 @@ plugins {
 }
 
 val ktorVersion = "1.6.7"
-val logbackVersion = "1.2.5"
+val logbackVersion = "1.2.11"
+val kmongoCoroutine = "4.5.0"
 
 group = "me.charles.maina"
 version = "1.0-SNAPSHOT"
@@ -20,6 +21,12 @@ dependencies {
     implementation( "io.ktor:ktor-server-netty:$ktorVersion")
     implementation ("ch.qos.logback:logback-classic:$logbackVersion")
     implementation ("io.ktor:ktor-serialization:$ktorVersion")
+
+    // Gson
+    implementation("io.ktor:ktor-gson:$ktorVersion")
+
+    // K-Mongo
+    implementation("org.litote.kmongo:kmongo-coroutine:$kmongoCoroutine")
 
     testImplementation ("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation ("org.jetbrains.kotlin:kotlin-test")
