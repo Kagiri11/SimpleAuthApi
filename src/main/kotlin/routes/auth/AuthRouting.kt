@@ -7,6 +7,7 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import models.auth.UserCredentials
 import models.user.User
+import org.litote.kmongo.eq
 import utils.Database
 
 fun Application.authRouting() {
@@ -22,6 +23,14 @@ fun Application.authRouting() {
             } else {
                 call.respondText("User already exists", status = HttpStatusCode.Conflict)
             }
+        }
+
+        post("/login") {
+            val user = call.receive<User>()
+            val users= Database.usersCollection.find().toList()
+
+            val foundUser = users.find { it == user } ?: return@post call.respondText(text = "No such user found")
+            call.respond(status = HttpStatusCode.OK, message = foundUser)
         }
 
         get("/users") {
