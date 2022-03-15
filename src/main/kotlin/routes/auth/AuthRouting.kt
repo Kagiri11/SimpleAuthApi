@@ -7,7 +7,6 @@ import io.ktor.response.*
 import io.ktor.routing.*
 import models.auth.UserCredentials
 import models.user.User
-import org.litote.kmongo.eq
 import utils.Database
 
 fun Application.authRouting() {
@@ -28,9 +27,8 @@ fun Application.authRouting() {
         post("/login") {
             val user = call.receive<User>()
             val users= Database.usersCollection.find().toList()
-
-            val foundUser = users.find { it == user } ?: return@post call.respondText(text = "No such user found")
-            call.respond(status = HttpStatusCode.OK, message = foundUser)
+            val userInDB = users.find { (it.username == user.username) && (it.password == user.password) } ?: return@post call.respondText(text = "No such user found", status = HttpStatusCode.NotFound)
+            call.respond(status = HttpStatusCode.OK, message = userInDB)
         }
 
         get("/users") {
