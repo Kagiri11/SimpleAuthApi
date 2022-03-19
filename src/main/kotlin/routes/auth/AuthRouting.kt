@@ -1,6 +1,8 @@
 package routes.auth
 
+import com.typesafe.config.ConfigFactory
 import io.ktor.application.*
+import io.ktor.config.*
 import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
@@ -8,8 +10,10 @@ import io.ktor.routing.*
 import models.auth.UserCredentials
 import models.user.User
 import utils.Database
+import utils.TokenManager
 
 fun Application.authRouting() {
+    val tokenManager = TokenManager(HoconApplicationConfig(ConfigFactory.load()))
     routing {
         post("/register") {
             val user = call.receive<UserCredentials>()
@@ -28,7 +32,8 @@ fun Application.authRouting() {
             val user = call.receive<User>()
             val users= Database.usersCollection.find().toList()
             val userInDB = users.find { (it.username == user.username) && (it.password == user.password) } ?: return@post call.respondText(text = "No such user found", status = HttpStatusCode.NotFound)
-            call.respond(status = HttpStatusCode.OK, message = userInDB)
+            val token = tokenManager.generateToken(userInDB)
+            call.respond(status = HttpStatusCode.OK, message = token)
         }
 
         get("/users") {

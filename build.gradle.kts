@@ -28,6 +28,10 @@ dependencies {
     // K-Mongo
     implementation("org.litote.kmongo:kmongo-coroutine:$kmongoCoroutine")
 
+    //JWT
+    implementation("io.ktor:ktor-auth:$ktorVersion")
+    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+
     testImplementation ("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation ("org.jetbrains.kotlin:kotlin-test")
     testImplementation(kotlin("test"))
